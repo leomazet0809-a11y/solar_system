@@ -44,23 +44,34 @@ class SolarSystem {
   }
 
   createPlanet(planetData, key) {
-    const segments = 128;
+    const segments = 256;
     const geometry = new THREE.IcosahedronGeometry(planetData.scaledRadius, segments);
 
     const texture = createPlanetTexture(planetData);
-    const material = new THREE.MeshPhongMaterial({
+    texture.encoding = THREE.sRGBEncoding;
+
+    const material = new THREE.MeshStandardMaterial({
       map: texture,
       color: planetData.color,
-      emissive: 0x000000,
-      emissiveIntensity: 0,
-      shininess: 5
+      emissive: planetData.emissiveIntensity ? 0x333333 : 0x000000,
+      emissiveIntensity: planetData.emissiveIntensity || 0,
+      metalness: planetData.metalness || 0.2,
+      roughness: planetData.roughness || 0.7,
+      shininess: planetData.shininess || 30,
+      side: THREE.FrontSide
     });
 
     const planet = new THREE.Mesh(geometry, material);
+    planet.castShadow = true;
+    planet.receiveShadow = true;
     planet.userData = { ...planetData, key, angle: Math.random() * Math.PI * 2 };
 
     if (planetData.hasRings) {
       this.addSaturnRings(planet, planetData);
+    }
+
+    if (planetData.atmosphereOpacity) {
+      this.addAtmosphere(planet, planetData);
     }
 
     this.scene.add(planet);
@@ -69,21 +80,26 @@ class SolarSystem {
 
   addSaturnRings(planet, planetData) {
     const innerRadius = planetData.scaledRadius * 1.5;
-    const outerRadius = planetData.scaledRadius * 2.5;
+    const outerRadius = planetData.scaledRadius * 2.8;
     const geometry = new THREE.BufferGeometry();
 
     const vertices = [];
     const indices = [];
+    const colors = [];
 
-    for (let i = 0; i < 64; i++) {
-      const angle = (i / 64) * Math.PI * 2;
+    for (let i = 0; i < 128; i++) {
+      const angle = (i / 128) * Math.PI * 2;
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
 
       vertices.push(cos * innerRadius, 0, sin * innerRadius);
       vertices.push(cos * outerRadius, 0, sin * outerRadius);
 
-      if (i < 63) {
+      const innerColor = [0.84, 0.65, 0.45];
+      const outerColor = [0.70, 0.55, 0.35];
+      colors.push(...innerColor, ...outerColor);
+
+      if (i < 127) {
         const a = i * 2;
         const b = a + 1;
         const c = (i + 1) * 2;
@@ -97,19 +113,41 @@ class SolarSystem {
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(indices), 1));
 
-    const material = new THREE.MeshPhongMaterial({
+    const material = new THREE.MeshStandardMaterial({
       color: 0xd4a574,
-      emissive: 0x000000,
-      emissiveIntensity: 0,
-      shininess: 30,
+      emissive: 0x3d2817,
+      emissiveIntensity: 0.1,
+      metalness: 0.3,
+      roughness: 0.7,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.7,
       side: THREE.DoubleSide
     });
 
     const rings = new THREE.Mesh(geometry, material);
     rings.rotation.x = (planetData.tilt || 0) * Math.PI / 180;
     planet.add(rings);
+  }
+
+  addAtmosphere(planet, planetData) {
+    if (!planetData.atmosphereOpacity) return;
+
+    const atmosphereRadius = planetData.scaledRadius * 1.1;
+    const atmosphereGeometry = new THREE.IcosahedronGeometry(atmosphereRadius, 128);
+
+    const atmosphereColor = planetData.color;
+    const atmosphereMaterial = new THREE.MeshPhongMaterial({
+      color: atmosphereColor,
+      transparent: true,
+      opacity: planetData.atmosphereOpacity * 0.3,
+      emissive: atmosphereColor,
+      emissiveIntensity: planetData.emissiveIntensity || 0,
+      side: THREE.BackSide
+    });
+
+    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    atmosphere.userData.isAtmosphere = true;
+    planet.add(atmosphere);
   }
 
   createOrbit(distance) {
