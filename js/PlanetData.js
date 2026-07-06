@@ -1,7 +1,7 @@
 const PLANETS_DATA = {
   sun: {
     name: 'Soleil',
-    radius: 10000,
+    radius: 300000,
     distance: 0,
     speed: 0,
     rotationSpeed: 0.004,
@@ -9,11 +9,16 @@ const PLANETS_DATA = {
     emissive: 0xfdb813,
     isSun: true,
     info: {
-      type: 'Étoile',
+      type: 'Étoile G2V',
       mass: '1.989 × 10³⁰ kg',
-      temperature: '5 778 K',
-      age: '4.6 milliards d\'années',
-      composition: 'Hydrogène (73%), Hélium (25%)'
+      diameter: '1,391,000 km',
+      temperature: '5,778 K (surface)',
+      tempCore: '15.7 millions K',
+      age: '4.603 milliards d\'années',
+      composition: 'Hydrogène (73.46%), Hélium (24.85%), Métaux (1.69%)',
+      luminosity: '3.828 × 10²⁶ W',
+      rotationPeriod: '25.38 jours (équateur)',
+      characteristics: 'Noyau en fusion thermonucléaire'
     }
   },
   mercury: {
@@ -26,10 +31,18 @@ const PLANETS_DATA = {
     color: 0x8c7853,
     info: {
       type: 'Planète tellurique',
-      mass: '3.285 × 10²³ kg',
+      mass: '3.301 × 10²³ kg',
+      diameter: '4,879 km',
+      density: '5.427 g/cm³',
+      gravity: '3.7 m/s²',
       temperature: 'De -173°C à 427°C',
-      distanceFromSun: '57.9 millions km',
-      yearDuration: '88 jours terrestres'
+      distanceFromSun: '57.91 millions km',
+      yearDuration: '88.0 jours terrestres',
+      dayDuration: '58.6 jours',
+      moons: '0',
+      orbitSpeed: '47.36 km/s',
+      atmosphere: 'Traces (H, He, O, Na, K)',
+      characteristics: 'Pas d\'atmosphère stable, criques thermales'
     }
   },
   venus: {
@@ -43,9 +56,18 @@ const PLANETS_DATA = {
     info: {
       type: 'Planète tellurique',
       mass: '4.867 × 10²⁴ kg',
-      temperature: '464°C',
-      distanceFromSun: '108.2 millions km',
-      yearDuration: '225 jours terrestres'
+      diameter: '12,104 km',
+      density: '5.243 g/cm³',
+      gravity: '8.87 m/s²',
+      temperature: '464°C (moyenne)',
+      pressureAtSurface: '92 bars',
+      distanceFromSun: '108.21 millions km',
+      yearDuration: '224.7 jours terrestres',
+      dayDuration: '243.0 jours (rétrograde)',
+      moons: '0',
+      orbitSpeed: '35.02 km/s',
+      atmosphere: 'CO₂ (96.5%), N₂ (3.5%), H₂SO₄ (nuages)',
+      characteristics: 'Planète la plus chaude, effet de serre extrême'
     }
   },
   earth: {
@@ -59,9 +81,17 @@ const PLANETS_DATA = {
     info: {
       type: 'Planète tellurique',
       mass: '5.972 × 10²⁴ kg',
+      diameter: '12,742 km',
+      density: '5.514 g/cm³',
+      gravity: '9.807 m/s²',
       temperature: '15°C (moyenne)',
-      distanceFromSun: '149.6 millions km',
-      yearDuration: '365.25 jours'
+      distanceFromSun: '149.60 millions km (1 UA)',
+      yearDuration: '365.25 jours',
+      dayDuration: '23 h 56 min 4 s',
+      moons: '1 (Lune)',
+      orbitSpeed: '29.78 km/s',
+      atmosphere: 'N₂ (78.1%), O₂ (20.9%), Ar (0.9%), CO₂ (0.04%)',
+      characteristics: 'Seule planète connue avec vie, eau liquide présente'
     }
   },
   mars: {
@@ -75,9 +105,18 @@ const PLANETS_DATA = {
     info: {
       type: 'Planète tellurique',
       mass: '6.417 × 10²³ kg',
-      temperature: '-65°C (moyenne)',
-      distanceFromSun: '227.9 millions km',
-      yearDuration: '687 jours terrestres'
+      diameter: '6,779 km',
+      density: '3.933 g/cm³',
+      gravity: '3.71 m/s²',
+      temperature: '-63°C (moyenne)',
+      tempRange: 'De -140°C à 20°C',
+      distanceFromSun: '227.92 millions km',
+      yearDuration: '686.97 jours',
+      dayDuration: '24 h 37 min',
+      moons: '2 (Phobos, Déimos)',
+      orbitSpeed: '24.07 km/s',
+      atmosphere: 'CO₂ (95.3%), N₂ (2.7%), Ar (2.0%)',
+      characteristics: 'Planète rouge, plus grand volcan connu, canyons profonds'
     }
   },
   jupiter: {
@@ -91,9 +130,17 @@ const PLANETS_DATA = {
     info: {
       type: 'Géante gazeuse',
       mass: '1.898 × 10²⁷ kg',
+      diameter: '139,820 km',
+      density: '1.326 g/cm³',
+      gravity: '24.79 m/s²',
       temperature: '-110°C (nuages)',
-      distanceFromSun: '778.5 millions km',
-      yearDuration: '12 années terrestres'
+      distanceFromSun: '778.50 millions km',
+      yearDuration: '11.862 années terrestres',
+      dayDuration: '9 h 55 min 30 s',
+      moons: '95 (officielement confirmées)',
+      orbitSpeed: '13.07 km/s',
+      composition: 'H₂ (86%), He (14%), traces CH₄, NH₃, H₂O',
+      characteristics: 'Grande Tache Rouge, 79+ lunes, la plus massive du système'
     }
   },
   saturn: {
@@ -108,9 +155,17 @@ const PLANETS_DATA = {
     info: {
       type: 'Géante gazeuse',
       mass: '5.683 × 10²⁶ kg',
+      diameter: '116,460 km',
+      density: '0.687 g/cm³',
+      gravity: '10.44 m/s²',
       temperature: '-140°C (nuages)',
       distanceFromSun: '1.434 milliards km',
-      yearDuration: '29.5 années terrestres'
+      yearDuration: '29.457 années terrestres',
+      dayDuration: '10 h 42 min 12 s',
+      moons: '146 (confirmées)',
+      orbitSpeed: '9.68 km/s',
+      composition: 'H₂ (96.3%), He (3.25%), CH₄, NH₃',
+      characteristics: 'Anneaux spectaculaires (glace/roche), moins dense que l\'eau'
     }
   },
   uranus: {
@@ -124,9 +179,18 @@ const PLANETS_DATA = {
     info: {
       type: 'Géante glacée',
       mass: '8.681 × 10²⁵ kg',
+      diameter: '50,724 km',
+      density: '1.27 g/cm³',
+      gravity: '8.87 m/s²',
       temperature: '-195°C (nuages)',
+      tempCore: '~5,000 K (hypothétique)',
       distanceFromSun: '2.873 milliards km',
-      yearDuration: '84 années terrestres'
+      yearDuration: '84.01 années terrestres',
+      dayDuration: '17 h 14 min (rétrograde)',
+      moons: '28 confirmées',
+      orbitSpeed: '6.81 km/s',
+      composition: 'H₂, He, H₂O, CH₄ (en grande quantité), NH₃',
+      characteristics: 'Axe incliné extrêmement (tourne sur le côté), anneaux fins'
     }
   },
   neptune: {
@@ -140,9 +204,19 @@ const PLANETS_DATA = {
     info: {
       type: 'Géante glacée',
       mass: '1.024 × 10²⁶ kg',
+      diameter: '49,244 km',
+      density: '1.638 g/cm³',
+      gravity: '11.15 m/s²',
       temperature: '-200°C (nuages)',
+      tempCore: '~7,000 K (hypothétique)',
       distanceFromSun: '4.495 milliards km',
-      yearDuration: '165 années terrestres'
+      yearDuration: '164.79 années terrestres',
+      dayDuration: '16 h 6 min 36 s',
+      moons: '16 confirmées',
+      orbitSpeed: '5.43 km/s',
+      windSpeed: 'jusqu\'à 2,100 m/s',
+      composition: 'H₂, He, CH₄ (donne la couleur bleue), H₂O, NH₃',
+      characteristics: 'La plus lointaine, vents extrêmes, Grande Tache Sombre'
     }
   }
 };
