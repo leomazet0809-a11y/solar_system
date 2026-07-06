@@ -1,7 +1,7 @@
 const PLANETS_DATA = {
   sun: {
     name: 'Soleil',
-    radius: 696000,
+    radius: 300000,
     distance: 0,
     speed: 0,
     rotationSpeed: 0.004,
